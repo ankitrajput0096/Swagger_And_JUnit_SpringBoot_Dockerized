@@ -1,6 +1,6 @@
-# Dockerized Spring boot application with PostgreSQL
+# Swagger 2 (Using Springfox) Spring boot application 
 
-Dockerized Spring Boot application with Dockerized postgreSQL server (JPA, Hibernate, PostgreSQL)
+Dockerized Spring Boot application with Swagger 2 implementation.
 
 ## Getting Started
 
@@ -10,7 +10,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 1. Clone the project to your local environment:
     ```
-    git clone https://github.com/ankitrajput0096/Dockerized_SpringBoot_PostgreSQL
+    git clone https://github.com/ankitrajput0096/Swagger_SpringBoot_Dockerized
     ```
 
 2. You need maven installed on your environment:
@@ -73,10 +73,16 @@ Keep docker running in a separate terminal tab, create another tab to run the ap
 
 Your server should be now running on http://localhost:8090
 
+# Get an access to all exposed API's using SWAGGER 2
+
+1. Open any web browser.
+2. Write this URL in the web browser : http://localhost:8090/swagger-ui.html
+3. Enjoy !!
+
 ## Get an access to all exposed API's with Postman
 
 1. Install Postman (https://www.getpostman.com)
-2. Import Postman collection from the `Dockerized_SpringBoot_PostgreSQL.postman_collection.json` file
+2. Import Postman collection from the `Swagger_SpringBoot_Dockerized.postman_collection.json` file
 3. Enjoy !!
 
 ## Built With
