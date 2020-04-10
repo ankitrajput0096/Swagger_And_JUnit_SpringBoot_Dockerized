@@ -1,0 +1,21 @@
+version: "3"
+volumes:
+  postgres-data:
+    driver: local
+services:
+  db:
+    image: postgres:10.3
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ankit
+      POSTGRES_USER: ankit
+    volumes:
+      - postgres-data:/var/lib/postgresql/postdata
+  backend:
+    build:
+      context: ./spring_boot_app
+    ports:
+      - "8090:8090"
+    depends_on:
+      - db
