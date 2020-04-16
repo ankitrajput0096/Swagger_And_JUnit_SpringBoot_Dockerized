@@ -23,14 +23,14 @@ public class springBootService implements SpringBootServiceInter{
 	{
 		return topicRepository.findOne(id);
 	}
-	public void addTopic(Topic topic)
+	public Topic addTopic(Topic topic)
 	{
-		topicRepository.save(topic);
+		return topicRepository.save(topic);
 	}
-	public void updatetopic(Topic topic,String id)
+	public Topic updatetopic(Topic topic,String id)
 	{
 		topicRepository.delete(id);
-		topicRepository.save(topic);
+		return topicRepository.save(topic);
 	}
 	public void deletetopic(String id)
 	{

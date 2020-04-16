@@ -1,4 +1,4 @@
-package com.example.Spring_Boot_JPA.controller;
+package com.example.Spring_Boot_JPA.service;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -15,14 +15,14 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static org.hamcrest.Matchers.is;
 
 import java.util.List;
 
 import com.example.Spring_Boot_JPA.model.Topic;
-import com.example.Spring_Boot_JPA.service.springBootService;
+import com.example.Spring_Boot_JPA.repository.TopicRepository;
 import com.example.Spring_Boot_JPA.utils.TestUtils;
 
-import static org.hamcrest.Matchers.is;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -32,25 +32,21 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-public class SpringControllerTest {
+public class springBootServiceTest {
 
     /* mocking dependencies you want for this testcase */
     @Mock
-    private springBootService springbootservice;
+    private TopicRepository topicRepository;
     /* Can add more dependencies here if required */
 
     /* mocking component for which the testcase is being written */
     @InjectMocks
-    SpringController springController;
-
+    springBootService springbootService;
 
     //This is used to setup context at entire test case file level
     @BeforeClass
@@ -66,7 +62,7 @@ public class SpringControllerTest {
         /*
         When using mocks for dependency injection, we need to reset the Mock objects before every test...
         */
-        reset(springbootservice);
+        reset(topicRepository);
         /*
         Similarly, add all the mocked dependencies
         */
@@ -75,69 +71,41 @@ public class SpringControllerTest {
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /*
-    Method Name : helloMethod
-    Description : This testcase tests the scenario where endpoint returns 'hello World' string.
-    */
-    @Test
-    public void helloMethodTest() {
-        // Test data
-
-        // Mocks
-        
-        // The logic we're testing in this testcase
-        ResponseEntity<String> response = springController.helloMethod();
-
-        // Verify the times mocked component is called
-
-        // Test case Assertions
-        assertThat(response.getStatusCodeValue(), is(200));
-        assertTrue("Checking whether respose body is of type 'String'", response.getBody() instanceof String);
-        assertEquals("Hello World", response.getBody());
-        assertEquals("Response should be 'OK'", HttpStatus.OK, response.getStatusCode());
-        assertNotNull("Checking whether response is not null or not", response.getBody());
-    }
-
-    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-    /*
-    Method Name : listOfTopcs
+    Method Name : getAllTopics
     Description : This testcase tests the scenario where we retrive all list of Topic objects in db
     */
     @Test
-    public void listOfTopcsTest() {
+    public void getAllTopicsTest() {
         // Test data
         List<Topic> fakeTopicList = TestUtils.createFakeTopicList(5);
 
         // Mocks
-        when(springbootservice.getAllTopics()).thenReturn(fakeTopicList);
+        when(topicRepository.findAll()).thenReturn(fakeTopicList);
 
         // The logic we're testing in this testcase
-        ResponseEntity<List<Topic>> response = springController.listOfTopcs();
+        List<Topic> allFakeTopics = springbootService.getAllTopics();
 
         // Verify the times mocked component is called
-        verify(springbootservice, times(1)).getAllTopics();
+        verify(topicRepository, times(1)).findAll();
 
         // Test case Assertions
-        assertArrayEquals("checking the fakelist are equal", fakeTopicList.toArray(), response.getBody().toArray());
-        assertThat("the response status code should be '200'", response.getStatusCodeValue(), is(200));
-        assertEquals("Response should be 'OK'", HttpStatus.OK, response.getStatusCode());
-        assertTrue("Body should not be null", response.hasBody());
-        assertFalse("Response should not be '404-not found'", HttpStatus.NOT_FOUND == response.getStatusCode());
-        assertNotNull("Checking the response is not null", response.getBody());
+        assertArrayEquals("checking the fakelist are equal", fakeTopicList.toArray(), allFakeTopics.toArray());
+        assertTrue("The fake list size is 5", allFakeTopics.size() == 5);
+        assertFalse("The fake list size is not 0", allFakeTopics.size() == 0);
         // NOTE : using streams in testcases
-        assertTrue("All the objects of Topic list are of instance Topic", response.getBody().stream().allMatch((e) -> e instanceof Topic));
+        assertTrue("All the objects of Topic list are of instance Topic", allFakeTopics.stream().allMatch((e) -> e instanceof Topic));
     }
-    
+
     // ----------------------------------------------------------------------------------------------------------------------------------------------------------
     /* NOTE : 
-    Here, we are writing test case for method 'getRequiredTopic'. 
+    Here, we are writing test case for method 'getTopicTest'. 
     So, we are writing two testcases which cover both positive and negative scenario of this method.
     /* 
-    Method Name : getRequiredTopic
+    Method Name : getTopicTest
     Description : This testcase tests the scenario where Topic object is present with specific ID 
     */
     @Test
-    public void getRequiredTopicTest() {
+    public void getTopicTest() {
         // Test data
         String fakeID = "fakeID";
         String fakeName = "fakeName";
@@ -145,30 +113,29 @@ public class SpringControllerTest {
         Topic fakeTopic = TestUtils.createTopicObject(fakeID, fakeName, fakeDescription);
 
         // Mocks
-        when(springbootservice.getTopic(fakeID)).thenReturn(fakeTopic);
+        when(topicRepository.findOne(fakeID)).thenReturn(fakeTopic);
 
         // The logic we're testing in this testcase
-        ResponseEntity<Topic> response = springController.getRequiredTopic(fakeID);
+        Topic TopicWithGivenID = springbootService.getTopic(fakeID);
 
         // Verify the times mocked component is called
-        verify(springbootservice, times(1)).getTopic(fakeID);
+        verify(topicRepository, times(1)).findOne(fakeID);
 
         // Test case Assertions
-        assertThat("the response code should be '302'", response.getStatusCodeValue(), is(302));
-        assertEquals("Response should be 'FOUND'", HttpStatus.FOUND, response.getStatusCode());
-        assertTrue("Check fake Topic ID are equal", response.getBody().getId() == fakeID);
-        assertFalse("Check fake Description is not empty string", response.getBody().getDescription() == "");
-        assertNotNull("Response body is not null", response.hasBody());
-        assertSame("Checking whether fakeName are same", response.getBody().getName(), fakeName);
-        assertNotSame("Checking whether fakeName length not 1", new Integer(response.getBody().getName().length()), new Integer(2));
+        assertEquals("The fake result Topic object should be equal to fakeTopic object", TopicWithGivenID, fakeTopic);
+        assertTrue("Check fake Topic ID are equal", TopicWithGivenID.getId() == fakeID);
+        assertFalse("Check fake Description is not empty string", TopicWithGivenID.getDescription() == "");
+        assertNotNull("Response body is not null", TopicWithGivenID);
+        assertSame("Checking whether fakeName are same", TopicWithGivenID.getName(), fakeName);
+        assertNotSame("Checking whether fakeName length not 1", new Integer(TopicWithGivenID.getName().length()), new Integer(2));
     }
 
     /* 
-    Method Name : getRequiredTopic
+    Method Name : getTopic
     Description : This testcase tests the scenario where Topic object is not present with specific ID 
     */
     @Test
-    public void getRequiredTopicTest2() {
+    public void getTopicTest2() {
         // Test data
         String fakeID = "fakeID";
         String fakeName = "fakeName";
@@ -176,20 +143,19 @@ public class SpringControllerTest {
         Topic fakeTopic = null;
 
         // Mocks
-        when(springbootservice.getTopic(fakeID)).thenReturn(fakeTopic);
+        when(topicRepository.findOne(fakeID)).thenReturn(fakeTopic);
 
         // The logic we're testing in this testcase
-        ResponseEntity<Topic> response = springController.getRequiredTopic(fakeID);
+        Topic TopicWithGivenID = springbootService.getTopic(fakeID);
 
         // Verify the times mocked component is called
-        verify(springbootservice, times(1)).getTopic(fakeID);
+        verify(topicRepository, times(1)).findOne(fakeID);
 
         // Test case Assertions
-        assertThat("the response code should be '404'", response.getStatusCodeValue(), is(404));
-        assertEquals("Response should be 'NOT_FOUND'", HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertNull("Response body is null", response.getBody());
-        assertSame("Checking whether response body is null", response.getBody(), fakeTopic);
-        assertFalse("Check fake Topic is not equal to required object", response.getBody() == TestUtils.createTopicObject(fakeID, fakeName, fakeDescription));
+        assertEquals("The fake result Topic object should be equal to fakeTopic object", TopicWithGivenID, fakeTopic);
+        assertNull("Checking if required object is null", TopicWithGivenID);
+        assertSame("Checking whether topic object is null", TopicWithGivenID, fakeTopic);
+        assertFalse("Check fake Topic is not equal to required object", TopicWithGivenID == TestUtils.createTopicObject(fakeID, fakeName, fakeDescription));
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -207,30 +173,32 @@ public class SpringControllerTest {
         Topic fakeTopic = TestUtils.createTopicObject(fakeID, fakeName, fakeDescription);
 
         // Mocks
-        when(springbootservice.addTopic(fakeTopic)).thenReturn(fakeTopic);
+        when(topicRepository.save(fakeTopic)).thenReturn(fakeTopic);
 
         // The logic we're testing in this testcase
-        ResponseEntity<?> response = springController.addTopic(fakeTopic);
+        Topic addedFakeTopic = springbootService.addTopic(fakeTopic);
 
         // Verify the times mocked component is called
-        verify(springbootservice, times(1)).addTopic(fakeTopic);
+        verify(topicRepository, times(1)).save(fakeTopic);
 
         // Test case Assertions
-        assertThat("the response code should be '201'", response.getStatusCodeValue(), is(201));
-        assertEquals("Response should be 'CREATED'", HttpStatus.CREATED, response.getStatusCode());
-        assertTrue("Check response body as null", response.getBody() == null);
-        assertFalse("Check response code is 'HttpStatus.OK'", response.getStatusCode() == HttpStatus.OK);
-        assertNull("Response body is null", response.getBody());
+        assertThat("The fake topic object has description as 'fakeDescription'", addedFakeTopic.getDescription(), is(fakeDescription));
+        assertEquals("The fake result Topic object should be equal to fakeTopic object", addedFakeTopic, fakeTopic);
+        assertTrue("Check fake Topic ID are equal", addedFakeTopic.getId() == fakeID);
+        assertFalse("Check fake Description is not empty string", addedFakeTopic.getDescription() == "");
+        assertNotNull("resultant topic is not null", addedFakeTopic);
+        assertSame("Checking whether fakeName are same", addedFakeTopic.getName(), fakeName);
+        assertNotSame("Checking whether fakeName length not 1", new Integer(addedFakeTopic.getName().length()), new Integer(2));
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /* 
-    Method Name : updateTopicTest
+    Method Name : updatetopicTest
     Description : This testcase tests the scenario where Topic object is updated in DB by passing new Topic object and Topic ID which needs to be updated. 
     */
     @Test
-    public void updateTopicTest() {
+    public void updatetopicTest() {
         // Test data
         String fakeID = "fakeID";
         String fakeName = "fakeName";
@@ -238,49 +206,48 @@ public class SpringControllerTest {
         Topic fakeTopic = TestUtils.createTopicObject(fakeID, fakeName, fakeDescription);
 
         // Mocks
-        when(springbootservice.updatetopic(fakeTopic, fakeID)).thenReturn(fakeTopic);
+        doNothing().when(topicRepository).delete(fakeID);
+        when(topicRepository.save(fakeTopic)).thenReturn(fakeTopic);
 
         // The logic we're testing in this testcase
-        ResponseEntity<?> response = springController.updateTopic(fakeTopic, fakeID);
+        Topic updatedFakeTopic = springbootService.updatetopic(fakeTopic, fakeID);
 
         // Verify the times mocked component is called
-        verify(springbootservice, times(1)).updatetopic(fakeTopic, fakeID);
+        verify(topicRepository, times(1)).delete(fakeID);
+        verify(topicRepository, times(1)).save(fakeTopic);
 
         // Test case Assertions
-        assertThat("the response code should be '200'", response.getStatusCodeValue(), is(200));
-        assertEquals("Response should be 'OK'", HttpStatus.OK, response.getStatusCode());
-        assertTrue("Check response body as null", response.getBody() == null);
-        assertFalse("Check response code is 'HttpStatus.CREATED'", response.getStatusCode() == HttpStatus.CREATED);
-        assertNull("Response body is null", response.getBody());
+        assertThat("The fake topic object has description as 'fakeDescription'", updatedFakeTopic.getDescription(), is(fakeDescription));
+        assertEquals("The fake result Topic object should be equal to fakeTopic object", updatedFakeTopic, fakeTopic);
+        assertTrue("Check fake Topic ID are equal", updatedFakeTopic.getId() == fakeID);
+        assertFalse("Check fake Description is not empty string", updatedFakeTopic.getDescription() == "");
+        assertNotNull("resultant topic is not null", updatedFakeTopic);
+        assertSame("Checking whether fakeName are same", updatedFakeTopic.getName(), fakeName);
+        assertNotSame("Checking whether fakeName length not 1", new Integer(updatedFakeTopic.getName().length()), new Integer(2));
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-    /* 
-    Method Name : deleteTopicTest
+  /* 
+    Method Name : deletetopicTest
     Description : This testcase tests the scenario where Topic object is deleted in DB by passing Topic ID which needs to be deleted. 
     */
     @Test
-    public void deleteTopicTest() {
+    public void deletetopicTest() {
         // Test data
         String fakeID = "fakeID";
 
         // Mocks
         // NOTE : way to mock method which does'nt return anything
-        doNothing().when(springbootservice).deletetopic(fakeID);
+        doNothing().when(topicRepository).delete(fakeID);
 
         // The logic we're testing in this testcase
-        ResponseEntity<?> response = springController.deleteTopic(fakeID);
+        springbootService.deletetopic(fakeID);
 
         // Verify the times mocked component is called
-        verify(springbootservice, times(1)).deletetopic(fakeID);
+        verify(topicRepository, times(1)).delete(fakeID);
 
         // Test case Assertions
-        assertThat("the response code should be '200'", response.getStatusCodeValue(), is(200));
-        assertEquals("Response should be 'OK'", HttpStatus.OK, response.getStatusCode());
-        assertTrue("Check response body as null", response.getBody() == null);
-        assertFalse("Check response code is 'HttpStatus.CREATED'", response.getStatusCode() == HttpStatus.CREATED);
-        assertNull("Response body is null", response.getBody());
     }
 
 
@@ -302,22 +269,21 @@ public class SpringControllerTest {
         Topic fakeTopic = TestUtils.createTopicObject(fakeID, fakeName, fakeDescription);
 
         // Mocks
-        when(springbootservice.getById(fakeID)).thenReturn(fakeTopic);
+        when(topicRepository.getById(fakeID)).thenReturn(fakeTopic);
 
         // The logic we're testing in this testcase
-        ResponseEntity<Topic> response = springController.getById(fakeID);
+        Topic TopicWithGivenID = springbootService.getById(fakeID);
 
         // Verify the times mocked component is called
-        verify(springbootservice, times(1)).getById(fakeID);
+        verify(topicRepository, times(1)).getById(fakeID);
 
         // Test case Assertions
-        assertThat("the response code should be '302'", response.getStatusCodeValue(), is(302));
-        assertEquals("Response should be 'FOUND'", HttpStatus.FOUND, response.getStatusCode());
-        assertTrue("Check fake Topic ID are equal", response.getBody().getId() == fakeID);
-        assertFalse("Check fake Description is not empty string", response.getBody().getDescription() == "");
-        assertNotNull("Response body is not null", response.hasBody());
-        assertSame("Checking whether fakeName are same", response.getBody().getName(), fakeName);
-        assertNotSame("Checking whether fakeName length not 1", new Integer(response.getBody().getName().length()), new Integer(2));
+        assertEquals("The fake result Topic object should be equal to fakeTopic object", TopicWithGivenID, fakeTopic);
+        assertTrue("Check fake Topic ID are equal", TopicWithGivenID.getId() == fakeID);
+        assertFalse("Check fake Description is not empty string", TopicWithGivenID.getDescription() == "");
+        assertNotNull("Response body is not null", TopicWithGivenID);
+        assertSame("Checking whether fakeName are same", TopicWithGivenID.getName(), fakeName);
+        assertNotSame("Checking whether fakeName length not 1", new Integer(TopicWithGivenID.getName().length()), new Integer(2));
     }
 
     /* 
@@ -333,20 +299,19 @@ public class SpringControllerTest {
         Topic fakeTopic = null;
 
         // Mocks
-        when(springbootservice.getById(fakeID)).thenReturn(fakeTopic);
+        when(topicRepository.getById(fakeID)).thenReturn(fakeTopic);
 
         // The logic we're testing in this testcase
-        ResponseEntity<Topic> response = springController.getById(fakeID);
+        Topic TopicWithGivenID = springbootService.getById(fakeID);
 
         // Verify the times mocked component is called
-        verify(springbootservice, times(1)).getById(fakeID);
+        verify(topicRepository, times(1)).getById(fakeID);
 
         // Test case Assertions
-        assertThat("the response code should be '404'", response.getStatusCodeValue(), is(404));
-        assertEquals("Response should be 'NOT_FOUND'", HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertNull("Response body is null", response.getBody());
-        assertSame("Checking whether response body is null", response.getBody(), fakeTopic);
-        assertFalse("Check fake Topic is not equal to required object", response.getBody() == TestUtils.createTopicObject(fakeID, fakeName, fakeDescription));
+        assertEquals("The fake result Topic object should be equal to fakeTopic object", TopicWithGivenID, fakeTopic);
+        assertNull("Checking if required object is null", TopicWithGivenID);
+        assertSame("Checking whether topic object is null", TopicWithGivenID, fakeTopic);
+        assertFalse("Check fake Topic is not equal to required object", TopicWithGivenID == TestUtils.createTopicObject(fakeID, fakeName, fakeDescription));
     }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -367,23 +332,21 @@ public class SpringControllerTest {
         Topic fakeTopic = TestUtils.createTopicObject(fakeID, fakeName, fakeDescription);
 
         // Mocks
-        when(springbootservice.getByIdAndName(fakeID, fakeName)).thenReturn(fakeTopic);
+        when(topicRepository.getByIdAndName(fakeID, fakeName)).thenReturn(fakeTopic);
 
         // The logic we're testing in this testcase
-        ResponseEntity<Topic> response = springController.getByIdAndName(fakeID, fakeName);
+        Topic TopicWithGivenIDAndName = springbootService.getByIdAndName(fakeID, fakeName);
 
         // Verify the times mocked component is called
-        verify(springbootservice, times(1)).getByIdAndName(fakeID, fakeName);
+        verify(topicRepository, times(1)).getByIdAndName(fakeID, fakeName);
 
         // Test case Assertions
-        assertThat("the response code should be '302'", response.getStatusCodeValue(), is(302));
-        assertEquals("Response should be 'FOUND'", HttpStatus.FOUND, response.getStatusCode());
-        assertTrue("Check fake Topic ID are equal", response.getBody().getId() == fakeID);
-        assertFalse("Check fake Description is not empty string", response.getBody().getDescription() == "");
-        assertNotNull("Response body is not null", response.hasBody());
-        assertSame("Checking whether fakeName are same", response.getBody().getName(), fakeName);
-        assertNotSame("Checking whether fakeName length not 1", new Integer(response.getBody().getName().length()), new Integer(2));
-    }
+        assertEquals("The fake result Topic object should be equal to fakeTopic object", TopicWithGivenIDAndName, fakeTopic);
+        assertTrue("Check fake Topic ID are equal", TopicWithGivenIDAndName.getId() == fakeID);
+        assertFalse("Check fake Description is not empty string", TopicWithGivenIDAndName.getDescription() == "");
+        assertNotNull("Response body is not null", TopicWithGivenIDAndName);
+        assertSame("Checking whether fakeName are same", TopicWithGivenIDAndName.getName(), fakeName);
+        assertNotSame("Checking whether fakeName length not 1", new Integer(TopicWithGivenIDAndName.getName().length()), new Integer(2));    }
 
     /* 
     Method Name : getByIdAndName
@@ -398,20 +361,19 @@ public class SpringControllerTest {
         Topic fakeTopic = null;
 
         // Mocks
-        when(springbootservice.getByIdAndName(fakeID, fakeName)).thenReturn(fakeTopic);
+        when(topicRepository.getByIdAndName(fakeID, fakeName)).thenReturn(fakeTopic);
 
         // The logic we're testing in this testcase
-        ResponseEntity<Topic> response = springController.getByIdAndName(fakeID, fakeName);
+        Topic TopicWithGivenIDAndName = springbootService.getByIdAndName(fakeID, fakeName);
 
         // Verify the times mocked component is called
-        verify(springbootservice, times(1)).getByIdAndName(fakeID, fakeName);
+        verify(topicRepository, times(1)).getByIdAndName(fakeID, fakeName);
 
         // Test case Assertions
-        assertThat("the response code should be '404'", response.getStatusCodeValue(), is(404));
-        assertEquals("Response should be 'NOT_FOUND'", HttpStatus.NOT_FOUND, response.getStatusCode());
-        assertNull("Response body is null", response.getBody());
-        assertSame("Checking whether response body is null", response.getBody(), fakeTopic);
-        assertFalse("Check fake Topic is not equal to required object", response.getBody() == TestUtils.createTopicObject(fakeID, fakeName, fakeDescription));
+        assertEquals("The fake result Topic object should be equal to fakeTopic object", TopicWithGivenIDAndName, fakeTopic);
+        assertNull("Checking if required object is null", TopicWithGivenIDAndName);
+        assertSame("Checking whether topic object is null", TopicWithGivenIDAndName, fakeTopic);
+        assertFalse("Check fake Topic is not equal to required object", TopicWithGivenIDAndName == TestUtils.createTopicObject(fakeID, fakeName, fakeDescription));
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -424,7 +386,7 @@ public class SpringControllerTest {
         When using mocks for dependency injection, we need to verify after test case has
         ended no more interactions are made with mocked dependencies.
         */
-        verifyNoMoreInteractions(springbootservice);
+        verifyNoMoreInteractions(topicRepository);
         /*
         Similarly, add all the mocked dependencies
         */

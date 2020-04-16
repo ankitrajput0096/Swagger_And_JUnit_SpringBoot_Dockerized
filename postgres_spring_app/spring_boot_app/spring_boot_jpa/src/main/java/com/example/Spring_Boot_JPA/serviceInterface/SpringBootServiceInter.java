@@ -8,7 +8,7 @@ public interface SpringBootServiceInter {
 	
 	public List<Topic> getAllTopics();
 	public Topic getTopic(String id);
-	public void addTopic(Topic topic);
-	public void updatetopic(Topic topic,String id);
+	public Topic addTopic(Topic topic);
+	public Topic updatetopic(Topic topic,String id);
 	public void deletetopic(String id);
 }
