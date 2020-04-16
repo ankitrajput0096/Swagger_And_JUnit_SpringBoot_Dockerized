@@ -1,6 +1,6 @@
-# Swagger 2 (Using Springfox) Spring boot application 
+# Swagger 2 (Using Springfox) And JUnit Test-cases (Mockito) Spring boot application 
 
-Dockerized Spring Boot application with Swagger 2 implementation.
+Dockerized Spring Boot application with Swagger 2 implementation and JUnit test-cases using Mockito.
 
 ## Getting Started
 
@@ -10,7 +10,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 1. Clone the project to your local environment:
     ```
-    git clone https://github.com/ankitrajput0096/Swagger_SpringBoot_Dockerized
+    git clone https://github.com/ankitrajput0096/Swagger_And_JUnit_SpringBoot_Dockerized
     ```
 
 2. You need maven installed on your environment:
@@ -55,6 +55,11 @@ Start docker:
 ```
 docker-compose up
 ```
+# Testing of Unit Test Cases using Mockito 
+1. Open terminal or command prompt with directory location as `spring_boot_jpa` folder.
+2. Write this command in terminal or command prompt : `mvn test`
+3. All test-cases will be run automatically of this spring boot application.
+4. Enjoy !!
 
 ## Running
 
@@ -91,6 +96,7 @@ Your server should be now running on http://localhost:8090
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [Docker](https://www.docker.com/) - For containerization of application
 * [PostgreSQL](https://www.postgresql.org/) - Database
+* [Mockito](https://site.mockito.org/) - Mockito Testing Framework
 
 ## Contributing
 
