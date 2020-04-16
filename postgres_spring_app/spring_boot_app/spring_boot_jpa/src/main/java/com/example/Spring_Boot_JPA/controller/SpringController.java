@@ -48,7 +48,7 @@ public class SpringController {
 		if(resultTopic != null) {
 			return new ResponseEntity<Topic>(resultTopic, HttpStatus.FOUND);
 		} else {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<Topic>(HttpStatus.NOT_FOUND);
 		}
 	}
 	
