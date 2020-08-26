@@ -10,11 +10,15 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(value="/simpleController")
-@Api(value="Simple Controller", description="Simple Controller to do simple operations")
+@Api(value="Simple Controller",
+		description="Simple Controller to do simple operations")
 public class SimpleController {
 	
 	@ApiOperation(value = " Hello friends rest endpoint ")
-	@RequestMapping(value="/helloFriends",method=RequestMethod.GET, produces = "text/plain")
+	@RequestMapping(
+			value="/helloFriends",
+			method=RequestMethod.GET,
+			produces = "text/plain")
 	public ResponseEntity<String> helloFriendsMethod()
 	{
 		return ResponseEntity.ok().body("hello friends");

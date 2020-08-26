@@ -18,7 +18,9 @@ public class swagger2configuration {
     public Docket productApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.example.Spring_Boot_JPA")) //Will add all the controllers in this package to swagger-ui
+                .apis(RequestHandlerSelectors
+                        .basePackage("com.example.Spring_Boot_JPA"))
+                //Will add all the controllers in this package to swagger-ui
                 .build()
                 .apiInfo(appAndDeveloperDetails());
     }
@@ -29,7 +31,9 @@ public class swagger2configuration {
                 "Spring Boot REST API using swagger",
                 "1.0",
                 "Terms of service",
-                new Contact("Ankit Rajput", "https://github.com/ankitrajput0096", "ankitrajput0096@gmail.com"),
+                new Contact("Ankit Rajput",
+                        "https://github.com/ankitrajput0096",
+                        "ankitrajput0096@gmail.com"),
                "Apache License Version 2.0",
                 "https://www.apache.org/licenses/LICENSE-2.0");
         return apiInfo;

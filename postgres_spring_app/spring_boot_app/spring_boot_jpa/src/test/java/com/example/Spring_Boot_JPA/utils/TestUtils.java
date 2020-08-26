@@ -29,7 +29,10 @@ public class TestUtils {
     Output : returns fake Topic object with passed fake attributes.
     Logic : Just creates and returns new fake Topic object.
     */
-    public static Topic createTopicObject(String fakeID, String fakeName, String fakeDescription) {
+    public static Topic createTopicObject(
+            String fakeID,
+            String fakeName,
+            String fakeDescription) {
         return new Topic(fakeID, fakeName, fakeDescription);
     }
 }

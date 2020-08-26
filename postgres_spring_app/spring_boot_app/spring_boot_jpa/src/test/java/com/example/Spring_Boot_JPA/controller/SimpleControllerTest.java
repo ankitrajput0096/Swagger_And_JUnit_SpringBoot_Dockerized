@@ -30,13 +30,16 @@ public class SimpleControllerTest {
     @BeforeClass
     public static void beforeClassTestBegins() {
         System.out.println("Before Class");
-        System.out.println("Executed once, before all tests start. It is used to perform time intensive activities, for example, to connect to a database");
+        System.out.println("Executed once, before all tests start. It " +
+                "is used to perform time intensive activities, " +
+                "for example, to connect to a database");
     }
 
     //This is used to setup context of single test case level
     @Before
     public void beforeTestBegins() {
-        System.out.println("This is exceuted before each test. It is used to prepare the test environment");
+        System.out.println("This is exceuted before each test. It is " +
+                "used to prepare the test environment");
     }
 
     @Test
@@ -51,22 +54,28 @@ public class SimpleControllerTest {
         // Then
         // Assertions
         assertThat(response.getStatusCodeValue()).isEqualTo(200);
-        assertTrue("Checking whether respose body is of type 'String'", response.getBody() instanceof String);
+        assertTrue("Checking whether respose body is of type 'String'",
+                response.getBody() instanceof String);
         assertEquals("hello friends", response.getBody());
-        assertEquals("Response should be 'OK'", HttpStatus.OK, response.getStatusCode());
-        assertNotNull("Checking whether response is not null or not", response.getBody());
+        assertEquals("Response should be 'OK'", HttpStatus.OK,
+                response.getStatusCode());
+        assertNotNull("Checking whether response is not null or not",
+                response.getBody());
     }
 
     //This is used to destroy context of single test case level
     @After
     public void afterTestCompletes() {
-        System.out.println("This is exceuted after each test. It is used to cleanup the test environment");
+        System.out.println("This is exceuted after each test. It is used" +
+                " to cleanup the test environment");
     }
 
     //This is used to destroy context at entire test case file level
     @AfterClass
     public static void afterClassTestCompletes() {
         System.out.println("After Class");
-        System.out.println("Executed once, after all tests completes. It is used to perform clean-up activities, for example, to disconnect from a database");
+        System.out.println("Executed once, after all tests completes. It " +
+                "is used to perform clean-up activities, " +
+                "for example, to disconnect from a database");
     }
 }
