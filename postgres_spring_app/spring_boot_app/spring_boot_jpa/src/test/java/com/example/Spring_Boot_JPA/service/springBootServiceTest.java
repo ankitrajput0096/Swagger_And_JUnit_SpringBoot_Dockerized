@@ -9,13 +9,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.reset;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 
@@ -144,13 +139,66 @@ public class springBootServiceTest {
                 new Integer(TopicWithGivenID.getName().length()), new Integer(2));
     }
 
-    /* 
+    /*
+    ===============> Prefer this for UnitTest Cases <==============
+
     Method Name : getTopic
     Description : This testcase tests the scenario where Topic
     object is not present with specific ID
     */
     @Test
     public void getTopicTest2() {
+        // Test data
+        String fakeID = "fakeID";
+        String fakeName = "fakeName";
+        String fakeDescription = "fakeDescription";
+        Topic fakeTopic = mock(Topic.class, RETURNS_MOCKS);
+
+        /**
+         * Also, please explore:
+         * 1.CALLS_REAL_METHODS
+         * An answer that calls the real methods (used for partial mocks).
+         * 2. RETURNS_DEEP_STUBS
+         * An answer that returns deep stubs (not mocks).
+         * 3. RETURNS_DEFAULTS
+         * The default configured answer of every mock.
+         * 4. RETURNS_MOCKS
+         * An answer that returns mocks (not stubs).
+         * 5. RETURNS_SELF
+         * An answer that tries to return itself.
+         * 6. RETURNS_SMART_NULLS
+         * An answer that returns smart-nulls.
+         */
+
+        // Mocks
+        when(fakeTopic.getDescription()).thenReturn(fakeDescription);
+        when(fakeTopic.getName()).thenReturn(fakeName);
+        when(fakeTopic.getId()).thenReturn(fakeID);
+        when(topicRepository.findOne(fakeID)).thenReturn(fakeTopic);
+
+        // The logic we're testing in this testcase
+        Topic TopicWithGivenID = springbootService.getTopic(fakeID);
+
+        // Verify the times mocked component is called
+        verify(topicRepository, times(1)).findOne(fakeID);
+
+        // Test case Assertions
+        assertEquals("The fake result Topic object should be " +
+                "equal to fakeTopic object", TopicWithGivenID, fakeTopic);
+        assertSame("Checking whether topic object is null",
+                TopicWithGivenID, fakeTopic);
+        assertFalse("Check fake Topic is not equal to required object",
+                TopicWithGivenID == TestUtils.createTopicObject(
+                        fakeID, fakeName, fakeDescription));
+    }
+
+    /* 
+    Method Name : getTopic
+    Description : This testcase tests the scenario where Topic
+    object is not present with specific ID
+    */
+    @Test
+    public void getTopicTest3() {
         // Test data
         String fakeID = "fakeID";
         String fakeName = "fakeName";
