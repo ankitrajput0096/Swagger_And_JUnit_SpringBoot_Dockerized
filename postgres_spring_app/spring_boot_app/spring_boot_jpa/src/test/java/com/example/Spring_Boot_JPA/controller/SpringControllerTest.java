@@ -17,6 +17,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.example.Spring_Boot_JPA.model.Topic;
 import com.example.Spring_Boot_JPA.service.springBootService;
@@ -52,7 +53,7 @@ public class SpringControllerTest {
     SpringController springController;
 
 
-    //This is used to setup context at entire test case file level
+    //This is used to set up context at entire test case file level
     @BeforeClass
     public static void beforeClassTestBegins() {
         System.out.println("Before Class");
@@ -61,7 +62,7 @@ public class SpringControllerTest {
                 "activities, for example, to connect to a database");
     }
 
-    //This is used to setup context of single test case level
+    //This is used to set up context of single test case level
     @Before
     public void setupBeforeEachTestCase() {
 
@@ -95,8 +96,7 @@ public class SpringControllerTest {
 
         // Test case Assertions
         assertThat(response.getStatusCodeValue(), is(200));
-        assertTrue("Checking whether respose body is of type 'String'",
-                response.getBody() instanceof String);
+        assertNotNull("Checking whether respose body is of type 'String'", response.getBody());
         assertEquals("Hello World", response.getBody());
         assertEquals("Response should be 'OK'", HttpStatus.OK,
                 response.getStatusCode());
@@ -107,12 +107,12 @@ public class SpringControllerTest {
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
     /*
-    Method Name : listOfTopcs
+    Method Name : listOfTopics
     Description : This testcase tests the scenario where
-    we retrive all list of Topic objects in db
+    we retrieve all list of Topic objects in db
     */
     @Test
-    public void listOfTopcsTest() {
+    public void listOfTopicsTest() {
         // Test data
         List<Topic> fakeTopicList = TestUtils.createFakeTopicList(5);
 
@@ -120,21 +120,20 @@ public class SpringControllerTest {
         when(springbootservice.getAllTopics()).thenReturn(fakeTopicList);
 
         // The logic we're testing in this testcase
-        ResponseEntity<List<Topic>> response = springController.listOfTopcs();
+        ResponseEntity<List<Topic>> response = springController.listOfTopics();
 
         // Verify the times mocked component is called
         verify(springbootservice, times(1)).getAllTopics();
 
         // Test case Assertions
-        assertArrayEquals("checking the fakelist are equal",
-                fakeTopicList.toArray(), response.getBody().toArray());
+        assertArrayEquals("checking the fake list are equal",
+                fakeTopicList.toArray(), Objects.requireNonNull(response.getBody()).toArray());
         assertThat("the response status code should be '200'",
                 response.getStatusCodeValue(), is(200));
         assertEquals("Response should be 'OK'", HttpStatus.OK,
                 response.getStatusCode());
         assertTrue("Body should not be null", response.hasBody());
-        assertFalse("Response should not be '404-not found'",
-                HttpStatus.NOT_FOUND == response.getStatusCode());
+        assertNotSame("Response should not be '404-not found'", HttpStatus.NOT_FOUND, response.getStatusCode());
         assertNotNull("Checking the response is not null", response.getBody());
         // NOTE : using streams in testcases
         assertTrue("All the objects of Topic list are of instance Topic",
@@ -179,16 +178,14 @@ public class SpringControllerTest {
                 response.getStatusCodeValue(), is(302));
         assertEquals("Response should be 'FOUND'",
                 HttpStatus.FOUND, response.getStatusCode());
-        assertTrue("Check fake Topic ID are equal",
-                response.getBody().getId() == fakeID);
-        assertFalse("Check fake Description is not empty string",
-                response.getBody().getDescription() == "");
+        assertSame("Check fake Topic ID are equal", Objects.requireNonNull(response.getBody()).getId(), fakeID);
+        assertNotSame("Check fake Description is not empty string", "", response.getBody().getDescription());
         assertNotNull("Response body is not null", response.hasBody());
         assertSame("Checking whether fakeName are same",
                 response.getBody().getName(), fakeName);
         assertNotSame("Checking whether fakeName length not 1",
-                new Integer(response.getBody().getName().length()),
-                new Integer(2));
+                response.getBody().getName().length(),
+                2);
     }
 
     /* 
@@ -202,10 +199,10 @@ public class SpringControllerTest {
         String fakeID = "fakeID";
         String fakeName = "fakeName";
         String fakeDescription = "fakeDescription";
-        Topic fakeTopic = null;
+        //Topic fakeTopic = null;
 
         // Mocks
-        when(springbootservice.getTopic(fakeID)).thenReturn(fakeTopic);
+        when(springbootservice.getTopic(fakeID)).thenReturn(null);
 
         // The logic we're testing in this testcase
         ResponseEntity<Topic> response = springController
@@ -221,10 +218,9 @@ public class SpringControllerTest {
                 HttpStatus.NOT_FOUND, response.getStatusCode());
         assertNull("Response body is null", response.getBody());
         assertSame("Checking whether response body is null",
-                response.getBody(), fakeTopic);
-        assertFalse("Check fake Topic is not equal to required object",
-                response.getBody() == TestUtils.createTopicObject(fakeID,
-                        fakeName, fakeDescription));
+                response.getBody(), null);
+        assertNotSame("Check fake Topic is not equal to required object", response.getBody(), TestUtils.createTopicObject(fakeID,
+                fakeName, fakeDescription));
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------

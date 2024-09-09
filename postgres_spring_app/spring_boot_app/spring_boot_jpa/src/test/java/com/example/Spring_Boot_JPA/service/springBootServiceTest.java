@@ -29,6 +29,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -114,29 +115,30 @@ public class springBootServiceTest {
         String fakeID = "fakeID";
         String fakeName = "fakeName";
         String fakeDescription = "fakeDescription";
-        Topic fakeTopic = TestUtils.createTopicObject(
+        Topic fakeTopicObject = TestUtils.createTopicObject(
                 fakeID, fakeName, fakeDescription);
+        Optional<Topic> fakeTopic = Optional.of(fakeTopicObject);
 
         // Mocks
-        when(topicRepository.findOne(fakeID)).thenReturn(fakeTopic);
+        when(topicRepository.findById(fakeID)).thenReturn(fakeTopic);
 
         // The logic we're testing in this testcase
         Topic TopicWithGivenID = springbootService.getTopic(fakeID);
 
         // Verify the times mocked component is called
-        verify(topicRepository, times(1)).findOne(fakeID);
+        verify(topicRepository, times(1)).findById(fakeID);
 
         // Test case Assertions
         assertEquals("The fake result Topic object should be equal" +
-                " to fakeTopic object", TopicWithGivenID, fakeTopic);
-        assertTrue("Check fake Topic ID are equal", TopicWithGivenID.getId() == fakeID);
-        assertFalse("Check fake Description is not empty string",
-                TopicWithGivenID.getDescription() == "");
+                " to fakeTopic object", TopicWithGivenID, fakeTopic.get());
+        assertEquals("Check fake Topic ID are equal", TopicWithGivenID.getId(), fakeID);
+        assertNotSame("Check fake Description is not empty string",
+                TopicWithGivenID.getDescription(), "");
         assertNotNull("Response body is not null", TopicWithGivenID);
         assertSame("Checking whether fakeName are same",
                 TopicWithGivenID.getName(), fakeName);
         assertNotSame("Checking whether fakeName length not 1",
-                new Integer(TopicWithGivenID.getName().length()), new Integer(2));
+                TopicWithGivenID.getName().length(),2);
     }
 
     /*
@@ -152,7 +154,11 @@ public class springBootServiceTest {
         String fakeID = "fakeID";
         String fakeName = "fakeName";
         String fakeDescription = "fakeDescription";
-        Topic fakeTopic = mock(Topic.class, RETURNS_MOCKS);
+        Topic fakeTopicObject = mock(Topic.class, RETURNS_MOCKS);
+        Optional<Topic> fakeTopic = Optional.of(fakeTopicObject);
+
+        // Mocks
+        when(topicRepository.findById(fakeID)).thenReturn(fakeTopic);
 
         /**
          * Also, please explore:
@@ -171,25 +177,24 @@ public class springBootServiceTest {
          */
 
         // Mocks
-        when(fakeTopic.getDescription()).thenReturn(fakeDescription);
-        when(fakeTopic.getName()).thenReturn(fakeName);
-        when(fakeTopic.getId()).thenReturn(fakeID);
-        when(topicRepository.findOne(fakeID)).thenReturn(fakeTopic);
+        when(fakeTopic.get().getDescription()).thenReturn(fakeDescription);
+        when(fakeTopic.get().getName()).thenReturn(fakeName);
+        when(fakeTopic.get().getId()).thenReturn(fakeID);
+        when(topicRepository.findById(fakeID)).thenReturn(fakeTopic);
 
         // The logic we're testing in this testcase
         Topic TopicWithGivenID = springbootService.getTopic(fakeID);
 
         // Verify the times mocked component is called
-        verify(topicRepository, times(1)).findOne(fakeID);
+        verify(topicRepository, times(1)).findById(fakeID);
 
         // Test case Assertions
         assertEquals("The fake result Topic object should be " +
-                "equal to fakeTopic object", TopicWithGivenID, fakeTopic);
+                "equal to fakeTopic object", TopicWithGivenID, fakeTopic.get());
         assertSame("Checking whether topic object is null",
-                TopicWithGivenID, fakeTopic);
-        assertFalse("Check fake Topic is not equal to required object",
-                TopicWithGivenID == TestUtils.createTopicObject(
-                        fakeID, fakeName, fakeDescription));
+                TopicWithGivenID, fakeTopic.get());
+        assertNotSame("Check fake Topic is not equal to required object", TopicWithGivenID, TestUtils.createTopicObject(
+                fakeID, fakeName, fakeDescription));
     }
 
     /* 
@@ -203,26 +208,26 @@ public class springBootServiceTest {
         String fakeID = "fakeID";
         String fakeName = "fakeName";
         String fakeDescription = "fakeDescription";
-        Topic fakeTopic = null;
+        Topic fakeTopicObject = mock(Topic.class, RETURNS_MOCKS);
+        Optional<Topic> fakeTopic = Optional.of(fakeTopicObject);
 
         // Mocks
-        when(topicRepository.findOne(fakeID)).thenReturn(fakeTopic);
+        when(topicRepository.findById(fakeID)).thenReturn(fakeTopic);
 
         // The logic we're testing in this testcase
         Topic TopicWithGivenID = springbootService.getTopic(fakeID);
 
         // Verify the times mocked component is called
-        verify(topicRepository, times(1)).findOne(fakeID);
+        verify(topicRepository, times(1)).findById(fakeID);
 
         // Test case Assertions
         assertEquals("The fake result Topic object should be " +
-                "equal to fakeTopic object", TopicWithGivenID, fakeTopic);
-        assertNull("Checking if required object is null", TopicWithGivenID);
+                "equal to fakeTopic object", TopicWithGivenID, fakeTopic.get());
+        assertNotNull("Checking if required object is null", TopicWithGivenID);
         assertSame("Checking whether topic object is null",
-                TopicWithGivenID, fakeTopic);
-        assertFalse("Check fake Topic is not equal to required object",
-                TopicWithGivenID == TestUtils.createTopicObject(
-                        fakeID, fakeName, fakeDescription));
+                TopicWithGivenID, fakeTopic.get());
+        assertNotSame("Check fake Topic is not equal to required object", TopicWithGivenID, TestUtils.createTopicObject(
+                fakeID, fakeName, fakeDescription));
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -256,14 +261,13 @@ public class springBootServiceTest {
                 is(fakeDescription));
         assertEquals("The fake result Topic object should be " +
                 "equal to fakeTopic object", addedFakeTopic, fakeTopic);
-        assertTrue("Check fake Topic ID are equal", addedFakeTopic.getId() == fakeID);
-        assertFalse("Check fake Description is not empty string",
-                addedFakeTopic.getDescription() == "");
+        assertSame("Check fake Topic ID are equal", addedFakeTopic.getId(), fakeID);
+        assertNotSame("Check fake Description is not empty string", "", addedFakeTopic.getDescription());
         assertNotNull("resultant topic is not null", addedFakeTopic);
         assertSame("Checking whether fakeName are same",
                 addedFakeTopic.getName(), fakeName);
         assertNotSame("Checking whether fakeName length not 1",
-                new Integer(addedFakeTopic.getName().length()), new Integer(2));
+                addedFakeTopic.getName().length(), 2);
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -275,7 +279,7 @@ public class springBootServiceTest {
     ID which needs to be updated.
     */
     @Test
-    public void updatetopicTest() {
+    public void updateTopicTest() {
         // Test data
         String fakeID = "fakeID";
         String fakeName = "fakeName";
@@ -284,7 +288,7 @@ public class springBootServiceTest {
                 fakeID, fakeName, fakeDescription);
 
         // Mocks
-        doNothing().when(topicRepository).delete(fakeID);
+        doNothing().when(topicRepository).deleteById(fakeID);
         when(topicRepository.save(fakeTopic)).thenReturn(fakeTopic);
 
         // The logic we're testing in this testcase
@@ -292,7 +296,7 @@ public class springBootServiceTest {
                 .updatetopic(fakeTopic, fakeID);
 
         // Verify the times mocked component is called
-        verify(topicRepository, times(1)).delete(fakeID);
+        verify(topicRepository, times(1)).deleteById(fakeID);
         verify(topicRepository, times(1)).save(fakeTopic);
 
         // Test case Assertions
@@ -301,15 +305,14 @@ public class springBootServiceTest {
                 is(fakeDescription));
         assertEquals("The fake result Topic object should be" +
                 " equal to fakeTopic object", updatedFakeTopic, fakeTopic);
-        assertTrue("Check fake Topic ID are equal", updatedFakeTopic.getId() == fakeID);
-        assertFalse("Check fake Description is not empty string",
-                updatedFakeTopic.getDescription() == "");
+        assertSame("Check fake Topic ID are equal", updatedFakeTopic.getId(), fakeID);
+        assertNotSame("Check fake Description is not empty string", "", updatedFakeTopic.getDescription());
         assertNotNull("resultant topic is not null", updatedFakeTopic);
         assertSame("Checking whether fakeName are same",
                 updatedFakeTopic.getName(), fakeName);
         assertNotSame("Checking whether fakeName length not 1",
-                new Integer(updatedFakeTopic.getName().length()),
-                new Integer(2));
+                updatedFakeTopic.getName().length(),
+                2);
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -320,19 +323,19 @@ public class springBootServiceTest {
       object is deleted in DB by passing Topic ID which needs to be deleted.
       */
     @Test
-    public void deletetopicTest() {
+    public void deleteTopicTest() {
         // Test data
         String fakeID = "fakeID";
 
         // Mocks
-        // NOTE : way to mock method which does'nt return anything
-        doNothing().when(topicRepository).delete(fakeID);
+        // NOTE : way to mock method which doesn't return anything
+        doNothing().when(topicRepository).deleteById(fakeID);
 
         // The logic we're testing in this testcase
         springbootService.deletetopic(fakeID);
 
         // Verify the times mocked component is called
-        verify(topicRepository, times(1)).delete(fakeID);
+        verify(topicRepository, times(1)).deleteById(fakeID);
 
         // Test case Assertions
     }
@@ -371,15 +374,14 @@ public class springBootServiceTest {
         // Test case Assertions
         assertEquals("The fake result Topic object should " +
                 "be equal to fakeTopic object", TopicWithGivenID, fakeTopic);
-        assertTrue("Check fake Topic ID are equal", TopicWithGivenID.getId() == fakeID);
-        assertFalse("Check fake Description is not empty string",
-                TopicWithGivenID.getDescription() == "");
+        assertSame("Check fake Topic ID are equal", TopicWithGivenID.getId(), fakeID);
+        assertNotSame("Check fake Description is not empty string", "", TopicWithGivenID.getDescription());
         assertNotNull("Response body is not null", TopicWithGivenID);
         assertSame("Checking whether fakeName are same",
                 TopicWithGivenID.getName(), fakeName);
         assertNotSame("Checking whether fakeName length not 1",
-                new Integer(TopicWithGivenID.getName().length()),
-                new Integer(2));
+                TopicWithGivenID.getName().length(),
+                2);
     }
 
     /* 
@@ -393,10 +395,9 @@ public class springBootServiceTest {
         String fakeID = "fakeID";
         String fakeName = "fakeName";
         String fakeDescription = "fakeDescription";
-        Topic fakeTopic = null;
 
         // Mocks
-        when(topicRepository.getById(fakeID)).thenReturn(fakeTopic);
+        when(topicRepository.getById(fakeID)).thenReturn(null);
 
         // The logic we're testing in this testcase
         Topic TopicWithGivenID = springbootService.getById(fakeID);
@@ -405,14 +406,13 @@ public class springBootServiceTest {
         verify(topicRepository, times(1)).getById(fakeID);
 
         // Test case Assertions
-        assertEquals("The fake result Topic object should " +
-                "be equal to fakeTopic object", TopicWithGivenID, fakeTopic);
+        assertNull("The fake result Topic object should " +
+                "be equal to fakeTopic object", TopicWithGivenID);
         assertNull("Checking if required object is null", TopicWithGivenID);
         assertSame("Checking whether topic object is null",
-                TopicWithGivenID, fakeTopic);
-        assertFalse("Check fake Topic is not equal to required object",
-                TopicWithGivenID == TestUtils.createTopicObject(
-                        fakeID, fakeName, fakeDescription));
+                null, null);
+        assertNotSame("Check fake Topic is not equal to required object", TopicWithGivenID, TestUtils.createTopicObject(
+                fakeID, fakeName, fakeDescription));
     }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -450,17 +450,15 @@ public class springBootServiceTest {
         // Test case Assertions
         assertEquals("The fake result Topic object should be equal" +
                 " to fakeTopic object", TopicWithGivenIDAndName, fakeTopic);
-        assertTrue("Check fake Topic ID are equal",
-                TopicWithGivenIDAndName.getId() == fakeID);
-        assertFalse("Check fake Description is not empty string",
-                TopicWithGivenIDAndName.getDescription() == "");
+        assertSame("Check fake Topic ID are equal", TopicWithGivenIDAndName.getId(), fakeID);
+        assertNotSame("Check fake Description is not empty string", "", TopicWithGivenIDAndName.getDescription());
         assertNotNull("Response body is not null",
                 TopicWithGivenIDAndName);
         assertSame("Checking whether fakeName are same",
                 TopicWithGivenIDAndName.getName(), fakeName);
         assertNotSame("Checking whether fakeName length not 1",
-                new Integer(TopicWithGivenIDAndName.getName().length()),
-                new Integer(2));
+                TopicWithGivenIDAndName.getName().length(),
+                2);
     }
 
     /* 
@@ -474,11 +472,10 @@ public class springBootServiceTest {
         String fakeID = "fakeID";
         String fakeName = "fakeName";
         String fakeDescription = "fakeDescription";
-        Topic fakeTopic = null;
 
         // Mocks
         when(topicRepository.getByIdAndName(
-                fakeID, fakeName)).thenReturn(fakeTopic);
+                fakeID, fakeName)).thenReturn(null);
 
         // The logic we're testing in this testcase
         Topic TopicWithGivenIDAndName = springbootService
@@ -488,14 +485,13 @@ public class springBootServiceTest {
         verify(topicRepository, times(1)).getByIdAndName(fakeID, fakeName);
 
         // Test case Assertions
-        assertEquals("The fake result Topic object should " +
-                "be equal to fakeTopic object", TopicWithGivenIDAndName, fakeTopic);
+        assertNull("The fake result Topic object should " +
+                "be equal to fakeTopic object", TopicWithGivenIDAndName);
         assertNull("Checking if required object is null", TopicWithGivenIDAndName);
         assertSame("Checking whether topic object is null",
-                TopicWithGivenIDAndName, fakeTopic);
-        assertFalse("Check fake Topic is not equal to required object",
-                TopicWithGivenIDAndName == TestUtils.createTopicObject(
-                        fakeID, fakeName, fakeDescription));
+                TopicWithGivenIDAndName, null);
+        assertNotSame("Check fake Topic is not equal to required object", TopicWithGivenIDAndName, TestUtils.createTopicObject(
+                fakeID, fakeName, fakeDescription));
     }
 
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------

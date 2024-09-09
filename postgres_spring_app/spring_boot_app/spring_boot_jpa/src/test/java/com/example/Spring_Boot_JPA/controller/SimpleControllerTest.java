@@ -4,7 +4,6 @@ package com.example.Spring_Boot_JPA.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -26,7 +25,7 @@ public class SimpleControllerTest {
     @InjectMocks
     SimpleController simpleController;
 
-    //This is used to setup context at entire test case file level
+    //This is used to set up context at entire test case file level
     @BeforeClass
     public static void beforeClassTestBegins() {
         System.out.println("Before Class");
@@ -35,10 +34,10 @@ public class SimpleControllerTest {
                 "for example, to connect to a database");
     }
 
-    //This is used to setup context of single test case level
+    //This is used to set up context of single test case level
     @Before
     public void beforeTestBegins() {
-        System.out.println("This is exceuted before each test. It is " +
+        System.out.println("This is excepted before each test. It is " +
                 "used to prepare the test environment");
     }
 
@@ -54,8 +53,7 @@ public class SimpleControllerTest {
         // Then
         // Assertions
         assertThat(response.getStatusCodeValue()).isEqualTo(200);
-        assertTrue("Checking whether respose body is of type 'String'",
-                response.getBody() instanceof String);
+        assertNotNull("Checking whether response body is of type 'String'", response.getBody());
         assertEquals("hello friends", response.getBody());
         assertEquals("Response should be 'OK'", HttpStatus.OK,
                 response.getStatusCode());
@@ -66,7 +64,7 @@ public class SimpleControllerTest {
     //This is used to destroy context of single test case level
     @After
     public void afterTestCompletes() {
-        System.out.println("This is exceuted after each test. It is used" +
+        System.out.println("This is excepted after each test. It is used" +
                 " to cleanup the test environment");
     }
 

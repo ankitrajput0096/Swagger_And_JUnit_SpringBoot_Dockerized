@@ -20,8 +20,7 @@ import com.example.Spring_Boot_JPA.service.springBootService;
 
 @RestController
 @RequestMapping(value = "/springBootJpa")
-@Api(value = "Simple Spring Controller",
-        description = "Simple Spring Controller to do CRUD operations")
+@Api(value = "Simple Spring Controller")
 public class SpringController {
 
     @Autowired
@@ -41,9 +40,9 @@ public class SpringController {
     		value = "/topics",
 			method = RequestMethod.GET,
 			produces = "application/json")
-    public ResponseEntity<List<Topic>> listOfTopcs() {
-        return new ResponseEntity<List<Topic>>(
-        		springbootservice.getAllTopics(), HttpStatus.OK);
+    public ResponseEntity<List<Topic>> listOfTopics() {
+        return new ResponseEntity<>(
+                springbootservice.getAllTopics(), HttpStatus.OK);
     }
 
     @ApiOperation(value = " return topic from db with specific ID")
@@ -55,13 +54,12 @@ public class SpringController {
     		@PathVariable String id) {
         Topic resultTopic = springbootservice.getTopic(id);
         if (resultTopic != null) {
-            return new ResponseEntity<Topic>(
-            		resultTopic, HttpStatus.FOUND);
+            return new ResponseEntity<>(
+                    resultTopic, HttpStatus.FOUND);
         } else {
-            return new ResponseEntity<Topic>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
 
     //In this json object is sent
     /*
@@ -95,7 +93,6 @@ public class SpringController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
     //Url "localhost:8080/springBootJpa/topics/delete/java
     @ApiOperation(value = "delete existing topic in db with specific ID")
     @RequestMapping(
@@ -107,7 +104,6 @@ public class SpringController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
     //Url "localhost:8080/springBootJpa/topics/getById?id=java
     @ApiOperation(value = " return topic from db with specific ID")
     @RequestMapping(
@@ -118,8 +114,8 @@ public class SpringController {
     		@RequestParam(value = "id") String id) {
         Topic resultTopic = springbootservice.getById(id);
         if (resultTopic != null) {
-            return new ResponseEntity<Topic>(
-            		resultTopic, HttpStatus.FOUND);
+            return new ResponseEntity<>(
+                    resultTopic, HttpStatus.FOUND);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -135,10 +131,9 @@ public class SpringController {
 			@RequestParam(value = "name") String name) {
         Topic resultTopic = springbootservice.getByIdAndName(id, name);
         if (resultTopic != null) {
-            return new ResponseEntity<Topic>(resultTopic, HttpStatus.FOUND);
+            return new ResponseEntity<>(resultTopic, HttpStatus.FOUND);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
 }

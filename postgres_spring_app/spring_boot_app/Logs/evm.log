@@ -1,0 +1,58 @@
+2024-Sep-08 19:11:15.494 INFO  [main] c.e.S.SpringBootJpaApplication - Starting SpringBootJpaApplication on Ankits-MacBook-Pro.local with PID 1621 (started by ankitrajput in /Users/ankitrajput/Ankit/Computer Science/Github Repos/Swagger_And_JUnit_SpringBoot_Dockerized/postgres_spring_app/spring_boot_app/spring_boot_jpa)
+2024-Sep-08 19:11:15.497 INFO  [main] c.e.S.SpringBootJpaApplication - No active profile set, falling back to default profiles: default
+2024-Sep-08 19:11:15.701 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2024-Sep-08 19:11:15.717 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 13ms. Found 1 repository interfaces.
+2024-Sep-08 19:11:15.812 INFO  [main] o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2024-Sep-08 19:11:15.895 INFO  [main] o.s.b.w.e.t.TomcatWebServer - Tomcat initialized with port(s): 8090 (http)
+2024-Sep-08 19:11:15.898 INFO  [main] o.a.c.c.StandardService - Starting service [Tomcat]
+2024-Sep-08 19:11:15.898 INFO  [main] o.a.c.c.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.27]
+2024-Sep-08 19:11:15.922 INFO  [main] o.a.c.c.C.[.[.[/] - Initializing Spring embedded WebApplicationContext
+2024-Sep-08 19:11:15.922 INFO  [main] o.s.w.c.ContextLoader - Root WebApplicationContext: initialization completed in 410 ms
+2024-Sep-08 19:11:15.969 INFO  [main] o.h.j.i.u.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-Sep-08 19:11:15.984 INFO  [main] o.h.Version - HHH000412: Hibernate Core {5.4.8.Final}
+2024-Sep-08 19:11:16.013 INFO  [main] o.h.a.c.Version - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2024-Sep-08 19:11:16.044 INFO  [main] c.z.h.HikariDataSource - HikariPool-1 - Starting...
+2024-Sep-08 19:11:16.081 INFO  [main] c.z.h.HikariDataSource - HikariPool-1 - Start completed.
+2024-Sep-08 19:11:16.088 INFO  [main] o.h.d.Dialect - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2024-Sep-08 19:11:16.288 INFO  [main] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-Sep-08 19:11:16.289 INFO  [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-Sep-08 19:11:16.433 WARN  [main] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-Sep-08 19:11:16.494 INFO  [main] o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2024-Sep-08 19:11:16.534 INFO  [main] s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+2024-Sep-08 19:11:16.538 INFO  [main] s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2024-Sep-08 19:11:16.540 INFO  [main] s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+2024-Sep-08 19:11:16.601 INFO  [main] o.s.b.w.e.t.TomcatWebServer - Tomcat started on port(s): 8090 (http) with context path ''
+2024-Sep-08 19:11:16.602 INFO  [main] c.e.S.SpringBootJpaApplication - Started SpringBootJpaApplication in 1.237 seconds (JVM running for 1.34)
+2024-Sep-08 19:11:20.119 INFO  [SpringContextShutdownHook] o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2024-Sep-08 19:11:20.122 INFO  [SpringContextShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-Sep-08 19:11:20.124 INFO  [SpringContextShutdownHook] c.z.h.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-Sep-08 19:11:20.126 INFO  [SpringContextShutdownHook] c.z.h.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-Sep-08 19:11:41.775 INFO  [main] c.e.S.SpringBootJpaApplication - Starting SpringBootJpaApplication on Ankits-MacBook-Pro.local with PID 1667 (started by ankitrajput in /Users/ankitrajput/Ankit/Computer Science/Github Repos/Swagger_And_JUnit_SpringBoot_Dockerized/postgres_spring_app/spring_boot_app/spring_boot_jpa)
+2024-Sep-08 19:11:41.776 INFO  [main] c.e.S.SpringBootJpaApplication - No active profile set, falling back to default profiles: default
+2024-Sep-08 19:11:41.980 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+2024-Sep-08 19:11:41.995 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 12ms. Found 1 repository interfaces.
+2024-Sep-08 19:11:42.086 INFO  [main] o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2024-Sep-08 19:11:42.160 INFO  [main] o.s.b.w.e.t.TomcatWebServer - Tomcat initialized with port(s): 8090 (http)
+2024-Sep-08 19:11:42.164 INFO  [main] o.a.c.c.StandardService - Starting service [Tomcat]
+2024-Sep-08 19:11:42.164 INFO  [main] o.a.c.c.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.27]
+2024-Sep-08 19:11:42.186 INFO  [main] o.a.c.c.C.[.[.[/] - Initializing Spring embedded WebApplicationContext
+2024-Sep-08 19:11:42.187 INFO  [main] o.s.w.c.ContextLoader - Root WebApplicationContext: initialization completed in 395 ms
+2024-Sep-08 19:11:42.233 INFO  [main] o.h.j.i.u.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-Sep-08 19:11:42.249 INFO  [main] o.h.Version - HHH000412: Hibernate Core {5.4.8.Final}
+2024-Sep-08 19:11:42.278 INFO  [main] o.h.a.c.Version - HCANN000001: Hibernate Commons Annotations {5.1.0.Final}
+2024-Sep-08 19:11:42.309 INFO  [main] c.z.h.HikariDataSource - HikariPool-1 - Starting...
+2024-Sep-08 19:11:42.342 INFO  [main] c.z.h.HikariDataSource - HikariPool-1 - Start completed.
+2024-Sep-08 19:11:42.349 INFO  [main] o.h.d.Dialect - HHH000400: Using dialect: org.hibernate.dialect.PostgreSQL10Dialect
+2024-Sep-08 19:11:42.537 INFO  [main] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000490: Using JtaPlatform implementation: [org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform]
+2024-Sep-08 19:11:42.539 INFO  [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-Sep-08 19:11:42.687 WARN  [main] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-Sep-08 19:11:42.748 INFO  [main] o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2024-Sep-08 19:11:42.788 INFO  [main] s.d.s.w.p.DocumentationPluginsBootstrapper - Context refreshed
+2024-Sep-08 19:11:42.793 INFO  [main] s.d.s.w.p.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2024-Sep-08 19:11:42.795 INFO  [main] s.d.s.w.s.ApiListingReferenceScanner - Scanning for api listing references
+2024-Sep-08 19:11:42.855 INFO  [main] o.s.b.w.e.t.TomcatWebServer - Tomcat started on port(s): 8090 (http) with context path ''
+2024-Sep-08 19:11:42.856 INFO  [main] c.e.S.SpringBootJpaApplication - Started SpringBootJpaApplication in 1.208 seconds (JVM running for 1.324)
+2024-Sep-08 19:11:47.735 INFO  [SpringContextShutdownHook] o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+2024-Sep-08 19:11:47.738 INFO  [SpringContextShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-Sep-08 19:11:47.741 INFO  [SpringContextShutdownHook] c.z.h.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-Sep-08 19:11:47.745 INFO  [SpringContextShutdownHook] c.z.h.HikariDataSource - HikariPool-1 - Shutdown completed.

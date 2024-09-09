@@ -1,6 +1,7 @@
 package com.example.Spring_Boot_JPA.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,8 @@ public class springBootService
     }
 
     public Topic getTopic(String id) {
-        return topicRepository.findOne(id);
+        Optional<Topic> topic = topicRepository.findById(id);
+        return topic.orElse(null);
     }
 
     public Topic addTopic(Topic topic) {
@@ -29,12 +31,12 @@ public class springBootService
     }
 
     public Topic updatetopic(Topic topic, String id) {
-        topicRepository.delete(id);
+        topicRepository.deleteById(id);
         return topicRepository.save(topic);
     }
 
     public void deletetopic(String id) {
-        topicRepository.delete(id);
+        topicRepository.deleteById(id);
     }
 
     public Topic getById(String id) {

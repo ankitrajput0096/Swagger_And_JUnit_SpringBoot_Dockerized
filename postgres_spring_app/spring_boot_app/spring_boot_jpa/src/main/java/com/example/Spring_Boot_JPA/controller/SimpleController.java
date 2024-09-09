@@ -10,8 +10,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(value="/simpleController")
-@Api(value="Simple Controller",
-		description="Simple Controller to do simple operations")
+@Api(value="Simple Controller")
 public class SimpleController {
 	
 	@ApiOperation(value = " Hello friends rest endpoint ")
