@@ -29,6 +29,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.testng.annotations.DataProvider;
+
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -272,7 +275,63 @@ public class springBootServiceTest {
 
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
+    /*
+    NOTE: This is not working because I am using Junit testing framework and
+    DataProviders are present in TestNG testing framework but
+    Read the code for using Data Providers and try to use it, where ever possible :)
+    */
+
+    // Using Data Providers for this update topic testcase
+    @DataProvider(name = "update-case-data-provider")
+    public Object [][] updateCaseDataProvider() {
+        return new Object[][] {
+                { TestUtils.createTopicObject("fakeId_1", "fakeName_1", "fakeDescription_1") },
+                { TestUtils.createTopicObject("fakeId_2", "fakeName_2", "fakeDescription_2") }
+        };
+    }
+
     /* 
+    Method Name : updatetopicTestWithDataProvider
+    Description : This testcase tests the scenario where Topic
+    object is updated in DB by passing new Topic object and Topic
+    ID which needs to be updated.
+    */
+    @org.testng.annotations.Test(dataProvider = "updateCaseDataProvider")
+    public void updatetopicTestWithDataProvider(@NotNull Topic fakeTopic) {
+        // Test data
+        // Passed via the dataProvider object.
+
+        // Mocks
+        doNothing().when(topicRepository).deleteById(fakeTopic.getId());
+        when(topicRepository.save(fakeTopic)).thenReturn(fakeTopic);
+
+        // The logic we're testing in this testcase
+        Topic updatedFakeTopic = springbootService
+                .updatetopic(fakeTopic, fakeTopic.getId());
+
+        // Verify the times mocked component is called
+        verify(topicRepository, times(1)).deleteById(fakeTopic.getId());
+        verify(topicRepository, times(1)).save(fakeTopic);
+
+        // Test case Assertions
+        assertThat("The fake topic object has description " +
+                        "as 'fakeDescription'", updatedFakeTopic.getDescription(),
+                is(fakeTopic.getDescription()));
+        assertEquals("The fake result Topic object should be" +
+                " equal to fakeTopic object", updatedFakeTopic, fakeTopic);
+        assertSame("Check fake Topic ID are equal", updatedFakeTopic.getId(), fakeTopic.getId());
+        assertNotSame("Check fake Description is not empty string", "", updatedFakeTopic.getDescription());
+        assertNotNull("resultant topic is not null", updatedFakeTopic);
+        assertSame("Checking whether fakeName are same",
+                updatedFakeTopic.getName(), fakeTopic.getName());
+        assertNotSame("Checking whether fakeName length not 1",
+                updatedFakeTopic.getName().length(),
+                2);
+    }
+
+    //-----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    /*
     Method Name : updatetopicTest
     Description : This testcase tests the scenario where Topic
     object is updated in DB by passing new Topic object and Topic

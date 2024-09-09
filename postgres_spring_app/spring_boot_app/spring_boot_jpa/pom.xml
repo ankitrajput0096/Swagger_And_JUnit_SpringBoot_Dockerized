@@ -76,6 +76,13 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<!-- This dependency is for adding Test and Data providers for writing effective Junit testcase -->
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>6.8.5</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
