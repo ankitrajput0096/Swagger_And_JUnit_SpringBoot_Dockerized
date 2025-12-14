@@ -55,7 +55,7 @@ public class SpringController {
         Topic resultTopic = springbootservice.getTopic(id);
         if (resultTopic != null) {
             return new ResponseEntity<>(
-                    resultTopic, HttpStatus.FOUND);
+                    resultTopic, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -115,7 +115,7 @@ public class SpringController {
         Topic resultTopic = springbootservice.getById(id);
         if (resultTopic != null) {
             return new ResponseEntity<>(
-                    resultTopic, HttpStatus.FOUND);
+                    resultTopic, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -131,7 +131,7 @@ public class SpringController {
 			@RequestParam(value = "name") String name) {
         Topic resultTopic = springbootservice.getByIdAndName(id, name);
         if (resultTopic != null) {
-            return new ResponseEntity<>(resultTopic, HttpStatus.FOUND);
+            return new ResponseEntity<>(resultTopic, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

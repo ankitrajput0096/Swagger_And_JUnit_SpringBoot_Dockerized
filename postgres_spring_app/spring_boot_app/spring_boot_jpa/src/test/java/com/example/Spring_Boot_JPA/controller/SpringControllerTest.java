@@ -174,10 +174,10 @@ public class SpringControllerTest {
         verify(springbootservice, times(1)).getTopic(fakeID);
 
         // Test case Assertions
-        assertThat("the response code should be '302'",
-                response.getStatusCodeValue(), is(302));
-        assertEquals("Response should be 'FOUND'",
-                HttpStatus.FOUND, response.getStatusCode());
+        assertThat("the response code should be '200'",
+                response.getStatusCodeValue(), is(200));
+        assertEquals("Response should be 'OK'",
+                HttpStatus.OK, response.getStatusCode());
         assertSame("Check fake Topic ID are equal", Objects.requireNonNull(response.getBody()).getId(), fakeID);
         assertNotSame("Check fake Description is not empty string", "", response.getBody().getDescription());
         assertNotNull("Response body is not null", response.hasBody());
@@ -364,9 +364,9 @@ public class SpringControllerTest {
         verify(springbootservice, times(1)).getById(fakeID);
 
         // Test case Assertions
-        assertThat("the response code should be '302'",
-                response.getStatusCodeValue(), is(302));
-        assertEquals("Response should be 'FOUND'", HttpStatus.FOUND,
+        assertThat("the response code should be '200'",
+                response.getStatusCodeValue(), is(200));
+        assertEquals("Response should be 'OK'", HttpStatus.OK,
                 response.getStatusCode());
         assertTrue("Check fake Topic ID are equal",
                 response.getBody().getId() == fakeID);
@@ -448,10 +448,10 @@ public class SpringControllerTest {
         verify(springbootservice, times(1)).getByIdAndName(fakeID, fakeName);
 
         // Test case Assertions
-        assertThat("the response code should be '302'",
-                response.getStatusCodeValue(), is(302));
-        assertEquals("Response should be 'FOUND'",
-                HttpStatus.FOUND, response.getStatusCode());
+        assertThat("the response code should be '200'",
+                response.getStatusCodeValue(), is(200));
+        assertEquals("Response should be 'OK'",
+                HttpStatus.OK, response.getStatusCode());
         assertTrue("Check fake Topic ID are equal",
                 response.getBody().getId() == fakeID);
         assertFalse("Check fake Description is not empty string",
